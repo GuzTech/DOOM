@@ -6,8 +6,8 @@
 #
 CC=  gcc  # gcc or g++
 
-CFLAGS=-g -Wall -DNORMALUNIX -DLINUX # -DUSEASM 
-LDFLAGS=-L/usr/X11R6/lib
+CFLAGS=-g -Wall -DNORMALUNIX -DLINUX -m32 -include /usr/include/errno.h # -DUSEASM 
+LDFLAGS=-L/usr/X11R6/lib -L/usr/lib32/
 LIBS=-lXext -lX11 -lnsl -lm
 
 # subdirectory for objects
@@ -77,13 +77,14 @@ OBJS=				\
 		$(O)/info.o				\
 		$(O)/sounds.o
 
-all:	 $(O)/linuxxdoom
+all:	$(O)/linuxxdoom
 
 clean:
 	rm -f *.o *~ *.flc
 	rm -f linux/*
 
 $(O)/linuxxdoom:	$(OBJS) $(O)/i_main.o
+	mkdir -p linux
 	$(CC) $(CFLAGS) $(LDFLAGS) $(OBJS) $(O)/i_main.o \
 	-o $(O)/linuxxdoom $(LIBS)
 
