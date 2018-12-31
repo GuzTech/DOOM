@@ -768,7 +768,7 @@ void I_InitGraphics(void)
 
     // use the default visual 
     X_screen = DefaultScreen(X_display);
-    if (!XMatchVisualInfo(X_display, X_screen, 8, PseudoColor, &X_visualinfo))
+    if (!XMatchVisualInfo(X_display, X_screen, 24, TrueColor, &X_visualinfo))
 	I_Error("xdoom currently only supports 256-color PseudoColor screens");
     X_visual = X_visualinfo.visual;
 
@@ -792,7 +792,7 @@ void I_InitGraphics(void)
 
     // create the colormap
     X_cmap = XCreateColormap(X_display, RootWindow(X_display,
-						   X_screen), X_visual, AllocAll);
+						   X_screen), X_visual, AllocNone);
 
     // setup attributes for main window
     attribmask = CWEventMask | CWColormap | CWBorderPixel;
@@ -811,14 +811,14 @@ void I_InitGraphics(void)
 					x, y,
 					X_width, X_height,
 					0, // borderwidth
-					8, // depth
+					24, //8, // depth
 					InputOutput,
 					X_visual,
 					attribmask,
 					&attribs );
 
-    XDefineCursor(X_display, X_mainWindow,
-		  createnullcursor( X_display, X_mainWindow ) );
+//    XDefineCursor(X_display, X_mainWindow,
+//		  createnullcursor( X_display, X_mainWindow ) );
 
     // create the GC
     valuemask = GCGraphicsExposures;
@@ -858,7 +858,7 @@ void I_InitGraphics(void)
 	// create the image
 	image = XShmCreateImage(	X_display,
 					X_visual,
-					8,
+					24,
 					ZPixmap,
 					0,
 					&X_shminfo,
@@ -897,7 +897,7 @@ void I_InitGraphics(void)
     {
 	image = XCreateImage(	X_display,
     				X_visual,
-    				8,
+    				24,
     				ZPixmap,
     				0,
     				(char*)malloc(X_width * X_height),
